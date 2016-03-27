@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-composer require phramework/utils
+composer require phramework/util
 ```
 
 ## Development

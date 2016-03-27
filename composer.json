@@ -50,7 +50,7 @@
       "phpunit"
     ],
     "phpunit": "phpunit",
-    "lint": "phpcs -p -s PSR-2 ./src",
+    "lint": "phpcs -p -s --standard=PSR2 ./src",
     "doc": "apigen generate -s ./src -d ./doc --template-theme bootstrap --todo --tree --deprecated --no-source-code --title \"phramework/utils\""
   }
 }

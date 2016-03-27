@@ -158,10 +158,12 @@ class File
      * Delete all contents from a directory
      * @param string $directory Directory path
      * @param boolean $DELETE_DIRECTORY *[Optional]*, if is set directory will be deleted too.
+     * @return bool
      */
     public static function deleteDirectoryContents($directory, $DELETE_DIRECTORY = false)
     {
         $files = array_diff(scandir($directory), ['.', '..']);
+
         foreach ($files as $file) {
             $path = self::getPath([$directory, $file]);
             (
