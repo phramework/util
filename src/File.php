@@ -23,25 +23,26 @@ namespace Phramework\Util;
  */
 class File
 {
-
     /**
      * Extract extension from file's path
      * @param string $filePath The file path
      * @return string The extension without dot prefix
      */
-    public static function extension($filePath)
+    public static function extension(string $filePath) : string
     {
         return strtolower(preg_replace('/^.*\.([^.]+)$/D', '$1', $filePath));
     }
 
     /**
      * Join directories and filename to create path
-     * @param array $array Array with directories and filename for example array( '/tmp', 'me', 'file.tmp' )
+     * @param string[] $array Array with directories and filename for example array( '/tmp', 'me', 'file.tmp' )
      * @param string $glue *[Optional]*
      * @return string Path
      */
-    public static function getPath($array, $glue = DIRECTORY_SEPARATOR)
-    {
+    public static function getPath(
+        array $array,
+        string $glue = DIRECTORY_SEPARATOR
+    ) : string {
         return str_replace('\\\\', '\\', join($glue, $array));
     }
 
@@ -51,7 +52,7 @@ class File
      * @param string $path File's path
      * @param double File's size
      */
-    public static function getFileSize($path)
+    public static function getFileSize(string $path)
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
             if (class_exists('COM')) {
@@ -80,7 +81,7 @@ class File
      * @param boolean $listFiles     *[Optional]* Include files on listing
      * @param string  $exclude       *[Optional]* Exclude paths that matches this
      * regular expression
-     * @param array   $allowedFileTypes *[Optional]* Allowed file extensions,
+     * @param string[]   $allowedFileTypes *[Optional]* Allowed file extensions,
      * default `[]` (allow all)
      * @param boolean $relativePath *[Optional]* Return paths in relative form,
      * default `false`
@@ -88,14 +89,14 @@ class File
      * @return array
      */
     public static function directoryToArray(
-        $directory,
-        $recursive = false,
-        $listDirs = false,
-        $listFiles = true,
-        $exclude = '',
-        $allowedFileTypes = [],
-        $relativePath = false
-    ) {
+        string $directory,
+        bool $recursive = false,
+        bool $listDirs = false,
+        bool $listFiles = true,
+        string $exclude = '',
+        array $allowedFileTypes = [],
+        bool $relativePath = false
+    ) : array {
         $arrayItems = [];
         $skipByExclude = false;
         $handle = opendir($directory);

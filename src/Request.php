@@ -23,15 +23,16 @@ namespace Phramework\Util;
  */
 class Request
 {
-    
     /**
      * Check if incoming request is send using ajax
-     * @return boolean
+     * @return bool
      */
-    public static function isAjaxRequest()
+    public static function isAjaxRequest() : bool
     {
-        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        if (
+            isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        ) {
             return true;
         }
         return false;
@@ -41,30 +42,30 @@ class Request
      * Check if incoming request is send using HTTPS protocol
      * @return boolean
      */
-    public static function isHTTPS()
+    public static function isHTTPS() : bool
     {
         return (isset($_SERVER['HTTPS'])
-            && ($_SERVER['HTTPS'] == 'on'))
+            && ($_SERVER['HTTPS'] === 'on'))
         || (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])
-            && ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+            && ($_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
         );
     }
 
     /**
      * Get the ip address of the client
-     * @return string|false Returns fails on failure
+     * @return string|null Returns fails on failure
      */
     public static function getIPAddress()
     {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
             return $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             ///to check ip is pass from proxy
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
             return $_SERVER['REMOTE_ADDR'];
         }
 
-        return false;
+        return null;
     }
 }

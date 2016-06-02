@@ -29,18 +29,15 @@ class Util
      * @return boolean
      * @note In php 7.0 json_decode has errors when string is empty
      */
-    public static function isJSON($string)
+    public static function isJSON(string $string) : bool
     {
-        if (strlen($string) === 0) {
+        if (empty($string)) {
             return false;
         }
 
         $object = json_decode($string);
 
-        return (is_string($string) && json_last_error() == JSON_ERROR_NONE
-            ? true
-            : false
-        );
+        return is_string($string) && json_last_error() === JSON_ERROR_NONE;
     }
 
     /**
@@ -48,7 +45,7 @@ class Util
      * @param string $str The input string
      * @return string Returns the clean string
      */
-    public static function toAscii($str)
+    public static function toAscii(string $str) : string
     {
         $clean = preg_replace('/[^a-zA-Z0-9\.\/_|+ -]/', '', $str);
         $clean = strtolower(trim($clean, '-'));
@@ -57,7 +54,7 @@ class Util
         return $clean;
     }
 
-    public static function dateFormatted($datetime, $format = 'j M Y G:i')
+    public static function dateFormatted($datetime, string $format = 'j M Y G:i') : string
     {
         $date = new DateTime($datetime);
         return $date->format($format);
@@ -67,9 +64,9 @@ class Util
      * Generate a random 40 character hex token
      * @return string Returns a random token
      */
-    public static function token($prefix = '')
+    public static function token($prefix = '') : string
     {
-        $token = sha1(uniqid($prefix, true) . rand());
+        $token = sha1(uniqid($prefix, true) . mt_rand());
 
         return $token;
     }
@@ -78,7 +75,7 @@ class Util
      * @param  integer $length *[Optional]* String's length
      * @return string
      */
-    public static function readableRandomString($length = 8)
+    public static function readableRandomString($length = 8) : string
     {
         $consonants = [
             'b',
@@ -126,7 +123,7 @@ class Util
      * @return string Returns a 36 characters string
      * @since 1.2.0
      */
-    public static function generateUUID()
+    public static function generateUUID() :string
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -146,12 +143,12 @@ class Util
      * @param string $type
      * @return bool
      */
-    public static function isArrayOf(array $array, $type = 'string')
+    public static function isArrayOf(array $array, string $type = 'string') : bool
     {
         foreach ($array as $value) {
             $valueType = gettype($value);
 
-            if ($type != $valueType && !(is_object($value) && $value instanceof $type)) {
+            if ($type !== $valueType && !(is_object($value) && $value instanceof $type)) {
                 return false;
             }
         }
@@ -163,7 +160,7 @@ class Util
      * @param array $array
      * @return bool
      */
-    public static function isArrayAssoc(array $array)
+    public static function isArrayAssoc(array $array) : bool
     {
         return array_keys($array) !== range(0, count($array) - 1);
     }
@@ -183,7 +180,7 @@ class Util
      * print_r(Util::cartesian($input));
      * ```
      */
-    public static function cartesian(array $input)
+    public static function cartesian(array $input) : array
     {
         $result = array();
 
@@ -244,10 +241,13 @@ class Util
      * @return bool
      * @source http://stackoverflow.com/a/10473026/2255129
      */
-    public static function startsWith($haystack, $needle)
+    public static function startsWith(string $haystack, string $needle) : bool
     {
         // search backwards starting from haystack length characters from the end
-        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+        return (
+            $needle === ''
+            || strrpos($haystack, $needle, -strlen($haystack)) !== false
+        );
     }
 
     /**
@@ -256,12 +256,15 @@ class Util
      * @return bool
      * @source http://stackoverflow.com/a/10473026/2255129
      */
-    public static function endsWith($haystack, $needle)
+    public static function endsWith(string $haystack, string $needle) : bool
     {
         // search forward starting from end minus needle length characters
-        return $needle === "" ||
-        (($temp = strlen($haystack) - strlen($needle)) >= 0
-            && strpos($haystack, $needle, $temp) !== false
+        return (
+            $needle === ''
+            || (
+                ($temp = strlen($haystack) - strlen($needle)) >= 0
+                && strpos($haystack, $needle, $temp) !== false
+            )
         );
     }
 }
